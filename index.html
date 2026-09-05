@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nomana</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- TOP BAR -->
+    <header class="topbar">
+
+        <div class="brand">
+            <div class="logo">N</div>
+
+            <div>
+                <h1>Nomana</h1>
+                <span>Write naturally.</span>
+            </div>
+        </div>
+
+        <div class="top-actions">
+
+            <span id="saveStatus" class="save-status">
+                Saved
+            </span>
+
+            <button id="importButton" class="secondary-button">
+                Import .md
+            </button>
+
+            <input
+                id="markdownFileInput"
+                type="file"
+                accept=".md,.markdown,text/markdown,text/plain"
+                hidden
+            >
+
+            <button
+                id="folderButton"
+                class="secondary-button folder-button"
+            >
+                Open Folder
+            </button>
+
+            <input
+                id="folderInput"
+                type="file"
+                webkitdirectory
+                directory
+                multiple
+                hidden
+            >
+
+            <div class="export-menu-wrap">
+                <button
+                    id="exportMenuButton"
+                    class="primary-button export-menu-button"
+                    type="button"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                >
+                    Export
+                    <span class="export-chevron">⌄</span>
+                </button>
+
+                <div id="exportMenu" class="export-menu hidden" role="menu">
+                    <button id="downloadButton" class="export-option" type="button" role="menuitem">
+                        <span class="export-option-title">Markdown</span>
+                        <span class="export-option-meta">.md</span>
+                    </button>
+                    <button id="exportHtmlButton" class="export-option" type="button" role="menuitem">
+                        <span class="export-option-title">HTML document</span>
+                        <span class="export-option-meta">.html</span>
+                    </button>
+                    <button id="exportPdfButton" class="export-option" type="button" role="menuitem">
+                        <span class="export-option-title">PDF document</span>
+                        <span class="export-option-meta">Print / Save PDF</span>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <div class="app-body">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+
+            <div class="sidebar-header">
+
+                <div>
+                    <div class="sidebar-eyebrow">
+                        WORKSPACE
+                    </div>
+
+                    <h2>Documents</h2>
+                </div>
+
+                <div class="sidebar-header-actions">
+
+                    <button
+                        id="newFolderButton"
+                        class="sidebar-icon-button"
+                        title="New folder"
+                    >
+                        ▱
+                    </button>
+
+                    <button
+                        id="newDocumentButton"
+                        class="new-document-button"
+                        title="New document"
+                    >
+                        +
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- SEARCH -->
+            <div class="sidebar-search">
+
+                <div class="search-box">
+
+                    <span class="search-icon">
+                        ⌕
+                    </span>
+
+                    <input
+                        id="documentSearch"
+                        type="search"
+                        placeholder="Search documents..."
+                        autocomplete="off"
+                        spellcheck="false"
+                    >
+
+                    <button
+                        id="clearSearchButton"
+                        class="clear-search-button hidden"
+                        title="Clear search"
+                    >
+                        ×
+                    </button>
+
+                </div>
+
+                <div
+                    id="searchResultsInfo"
+                    class="search-results-info hidden"
+                ></div>
+
+            </div>
+
+
+            <!-- FOLDERS + DOCUMENTS -->
+            <div
+                id="documentList"
+                class="document-list"
+            ></div>
+
+
+            <div class="sidebar-footer">
+
+                <span id="documentCount">
+                    0 documents
+                </span>
+
+                <span id="folderCount">
+                    0 folders
+                </span>
+
+            </div>
+
+        </aside>
+
+
+        <!-- MAIN EDITOR -->
+        <section class="editor-shell">
+
+            <!-- DOCUMENT BAR -->
+            <div class="document-bar">
+
+                <div class="title-area">
+
+                    <input
+                        id="documentTitle"
+                        class="document-title"
+                        type="text"
+                        spellcheck="false"
+                    >
+
+                    <span
+                        id="projectBadge"
+                        class="project-badge hidden"
+                    >
+                        PROJECT
+                    </span>
+
+                </div>
+
+
+                <div class="document-actions">
+
+                    <select
+                        id="documentFolderSelect"
+                        class="folder-select"
+                        title="Move document"
+                    >
+                        <option value="">
+                            Unfiled
+                        </option>
+                    </select>
+
+                    <button
+                        id="deleteDocumentButton"
+                        class="delete-document-button"
+                    >
+                        Delete
+                    </button>
+
+                    <div class="view-switcher">
+
+                        <button
+                            class="view-button active"
+                            data-view="visual"
+                        >
+                            Visual
+                        </button>
+
+                        <button
+                            class="view-button"
+                            data-view="markdown"
+                        >
+                            Markdown
+                        </button>
+
+                        <button
+                            class="view-button"
+                            data-view="split"
+                        >
+                            Split
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- TOOLBAR -->
+            <div class="toolbar">
+
+                <button
+                    class="tool-button"
+                    data-action="undo"
+                    title="Undo"
+                >
+                    ↶
+                </button>
+
+                <button
+                    class="tool-button"
+                    data-action="redo"
+                    title="Redo"
+                >
+                    ↷
+                </button>
+
+                <div class="divider"></div>
+
+                <select
+                    id="headingSelect"
+                    class="heading-select"
+                >
+                    <option value="">Paragraph</option>
+                    <option value="# ">Heading 1</option>
+                    <option value="## ">Heading 2</option>
+                    <option value="### ">Heading 3</option>
+                </select>
+
+                <div class="divider"></div>
+
+                <button
+                    class="tool-button bold"
+                    data-format="bold"
+                >
+                    B
+                </button>
+
+                <button
+                    class="tool-button italic"
+                    data-format="italic"
+                >
+                    I
+                </button>
+
+                <button
+                    class="tool-button"
+                    data-format="strike"
+                >
+                    S
+                </button>
+
+                <div class="divider"></div>
+
+                <button
+                    class="tool-button"
+                    data-format="bullet"
+                >
+                    • List
+                </button>
+
+                <button
+                    class="tool-button"
+                    data-format="number"
+                >
+                    1. List
+                </button>
+
+                <button
+                    class="tool-button"
+                    data-format="quote"
+                >
+                    ❝
+                </button>
+
+                <div class="divider"></div>
+
+                <button
+                    class="tool-button"
+                    data-format="link"
+                >
+                    🔗
+                </button>
+
+                <button
+                    class="tool-button"
+                    data-format="code"
+                >
+                    &lt;/&gt;
+                </button>
+
+                <button
+                    class="tool-button"
+                    data-format="codeblock"
+                >
+                    Code
+                </button>
+
+            </div>
+
+
+            <!-- WORKSPACE -->
+            <main class="workspace">
+
+                <!-- VISUAL -->
+                <section
+                    id="visualView"
+                    class="editor-view visual-view"
+                >
+                    <article
+                        id="visualEditor"
+                        class="visual-editor"
+                        contenteditable="true"
+                    ></article>
+                </section>
+
+
+                <!-- MARKDOWN -->
+                <section
+                    id="markdownView"
+                    class="editor-view markdown-view hidden"
+                >
+                    <textarea
+                        id="markdownEditor"
+                        class="markdown-editor"
+                        spellcheck="false"
+                    ></textarea>
+                </section>
+
+
+                <!-- SPLIT -->
+                <section
+                    id="splitView"
+                    class="editor-view split-view hidden"
+                >
+
+                    <div class="split-panel">
+
+                        <div class="panel-label">
+                            MARKDOWN
+                        </div>
+
+                        <textarea
+                            id="splitMarkdownEditor"
+                            class="markdown-editor split-editor"
+                            spellcheck="false"
+                        ></textarea>
+
+                    </div>
+
+
+                    <div class="split-panel preview-panel">
+
+                        <div class="panel-label">
+                            PREVIEW
+                        </div>
+
+                        <article
+                            id="markdownPreview"
+                            class="markdown-preview"
+                        ></article>
+
+                    </div>
+
+                </section>
+
+            </main>
+
+
+            <!-- STATUS -->
+            <footer class="statusbar">
+
+                <div>
+                    <span id="wordCount">0 words</span>
+
+                    <span class="status-divider">
+                        •
+                    </span>
+
+                    <span id="characterCount">
+                        0 characters
+                    </span>
+                </div>
+
+                <div id="statusMode">
+                    Markdown
+                </div>
+
+            </footer>
+
+        </section>
+
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>
