@@ -4,6 +4,16 @@ A browser-based Markdown document workspace combining visual editing with direct
 
 Nomana is designed to make Markdown feel more like a complete writing environment while retaining the simplicity and portability of plain-text `.md` documents.
 
+## Screenshots
+
+### Nomana Editor
+
+![Nomana Editor](screenshots/001.png)
+
+### Markdown Split View
+
+![Nomana Markdown Split View](screenshots/002.png)
+
 ## Features
 
 - Visual, Markdown and Split editing modes
